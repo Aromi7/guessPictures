@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<style>
+			#area-container { display: inline-block; position:relative }
+			.box { position: relative; width: 50px; height: 50px; border: 1px solid black; display: inline-block; margin: 2px; text-align: center; vertical-align: middle; line-height: 50px; }
+			.wal { position: absolute; top: 0; left: 0; width: 50px; height: 50px; border: 1px solid green; background-color: rgba(50, 50, 50, 0.5); }
+			#msg { position:absolute; left:0; right:0; top: 225px; width:100%; height:100%; display:none; z-index:1000 }
+			#result { text-align: center; font-size: 100px; color: red; }
+			.img { width: 50px; height: 50px }
+		</style>
+	</head>
+	
+	<body>
+	
+		<div id="main">
+			<p id="score">0</p>
+			<div id="area-container">
+				<div id="msg" onclick="aaa()">OK</div>
+				<div id="area"></div>
+			</div>
+		</div>
+	
+		<script>
+			
+			var x = 4;
+			var y = 4;
+			var boxs = "";
+			var a = document.getElementById('area');
+			// src, name
+			var ar = [["pic1", "pic1"], ["pic2", "pic2"], ["pic3", "pic3"], ["pic4", "pic4"], ["pic5", "pic5"], ["pic6", "pic6"], ["pic7", "pic7"], ["pic8", "pic8"]];
+			var score = 0;
+			
+			// boxs
+			function box(){
+				for(var i = 0; i < x * y; i++){
+					boxs += "<div class='box'><img class='img' src='"+ar[i][0]+".jpg' name="+ar[i][1]+"><div id='wal"+i+"' onclick='none(this, "+ar[i][1]+")' class='wal'></div></div>"
+					if( ( i + 1) % x == 0 ){
+						boxs += '</br>'
+					}
+				}
+				a.innerHTML = boxs;
+			}
+			
+			
+			function nums(){
+	
+				// numbers' doubling
+				ar = ar.concat(ar)
+				
+				// numbers' mixing
+				for(var i = ar.length - 1; i > 0; i--){
+					var z = Math.floor(Math.random() * i);
+					var j = ar[i];
+					ar[i] = ar[z];
+					ar[z] = j;
+				}
+
+			}
+			
+			nums();
+			box();
+			
+			var n1 = "";
+			var objID = "";
+			
+			var obj1, obj2;
+			
+			// wall delating
+			function none(w, n){
+			
+				w.style.display = 'none';
+				
+				if(n1 != ""){
+					if(n1 == n){
+						score++;
+					}else{
+						score--;
+						document.getElementById("msg").style.display = "block";
+						obj1 = document.getElementById(objID);
+						obj2 = w;
+					}
+					n1 = "";
+					objID = "";
+					
+				}else{
+					n1 = n;
+					objID = w.id;
+				}
+
+				if(score < 0){
+					document.getElementById("main").innerHTML = "<h1 id='result'>Game Over</h1>"
+				}
+				
+				document.getElementById("score").innerHTML = score;
+	
+			}
+
+			function aaa(){
+				document.getElementById("msg").style.display = "none";
+				obj1.style.display = "block";
+				obj2.style.display = "block";
+			}
+			
+		</script>
+		
+	</body>
+</html>
